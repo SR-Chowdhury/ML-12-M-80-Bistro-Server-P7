@@ -53,6 +53,7 @@ async function run() {
         const menuCollection = client.db("bistroDB").collection("menu");
         const reviewCollection = client.db("bistroDB").collection("reviews");
         const cartCollection = client.db("bistroDB").collection("carts");
+        const paymentCollection = client.db("bistroDB").collection("payments");
 
         /**
          * ----------------------------------------- JWT --------------------------------
@@ -201,6 +202,12 @@ async function run() {
             });
 
             res.send({ clientSecret: paymentIntent.client_secret});
+        });
+
+        app.post('/payments', async (req, res) => {
+            const payment = req.body;
+            const result = await paymentCollection.insertOne(payment);
+            res.send(result);
         });
 
         // Send a ping to confirm a successful connection
